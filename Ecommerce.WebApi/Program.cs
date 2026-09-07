@@ -1,12 +1,28 @@
+using Ecommerce.Core;
+using Ecommerce.Infrastructure;
+using Ecommerce.WebApi.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-var app = builder.Build();
+//Add Infrastructure Layer
+builder.Services.AddInfrastructure();
+//add Core Layer
+builder.Services.AddCore();
 
-// Configure the HTTP request pipeline.
+//Add Middlewares
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
+builder.Services.AddExceptionHandler(o =>
+{
+    o.ExceptionHandlingPath = "/error";
+});
+builder.Services.AddControllers();
+var app = builder.Build();
+app.UseExceptionHandlingMiddleware();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -14,28 +30,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.UseRouting();
 
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast");
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.MapGet("/", () =>
+{
+    throw new Exception("text");
+});
+
+app.MapGet("/ok", () => "ok");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

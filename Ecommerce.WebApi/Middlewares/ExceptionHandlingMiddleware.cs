@@ -21,11 +21,11 @@ public class ExceptionHandlingMiddleware : IMiddleware
             {
                 _logger.LogError(ex.InnerException, ex.Message);
             }
+            context.Response.StatusCode = 500;
             await context.Response.WriteAsJsonAsync(new
             {
                 Message = ex.Message,
                 Type = ex.GetType().FullName,
-                StatusCode = 500
             });
         }
     }
