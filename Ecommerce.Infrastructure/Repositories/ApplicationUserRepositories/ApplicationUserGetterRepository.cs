@@ -13,11 +13,8 @@ public class ApplicationUserGetterRepository : IApplicationUserGetterRepository
     {
         _db = db;
     }
-    public Task<ApplicationUser?> GetUserByEmailAndPassword(string? email, string? password)
+    public Task<ApplicationUser?> GetUserByEmail(string? email)
     {
-        return _db.ApplicationUsers.SingleOrDefaultAsync(
-            user => user.Email == email &&
-                    user.Password == password
-                    );
+        return _db.ApplicationUsers.SingleOrDefaultAsync(user => user.Email == email);
     }
 }

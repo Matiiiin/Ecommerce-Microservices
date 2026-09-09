@@ -4,5 +4,5 @@ namespace Ecommerce.Core.RepositoryContracts.ApplicationUserRepositoryContracts;
 
 public interface IApplicationUserGetterRepository
 {
-    public Task<ApplicationUser?> GetUserByEmailAndPassword(string? email ,string? password);
+    public Task<ApplicationUser?> GetUserByEmail(string? email);
 }
