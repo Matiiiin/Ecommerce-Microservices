@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 //Add Infrastructure Layer
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 //add Core Layer
 builder.Services.AddCore();
 
