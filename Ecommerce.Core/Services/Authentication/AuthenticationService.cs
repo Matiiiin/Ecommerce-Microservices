@@ -5,6 +5,7 @@ using Ecommerce.Core.ServiceContracts.ApplicationUserSecurity;
 using Ecommerce.Core.ServiceContracts.Authentication;
 using Ecommerce.Core.ServiceContracts.JWTToken;
 using Ecommerce.Core.Services.JWTToken;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace ECommerce.Core.Services.Authentication;
@@ -18,7 +19,7 @@ public class AuthenticationService : IAuthenticationServiceContract
     private readonly IApplicationUserGetterRepository _applicationUserGetterRepository;
 
     // Repository used to save newly registered users.
-    private readonly IApplicationAdderRepository _applicationUserAdderRepository;
+    private readonly IApplicationUserAdderRepository _applicationUserUserAdderRepository;
 
     // Service responsible for validating a user's password.
     private readonly IPasswordCheckerServiceContract _passwordCheckerService;
@@ -31,12 +32,12 @@ public class AuthenticationService : IAuthenticationServiceContract
     /// </summary>
     public AuthenticationService(
         IApplicationUserGetterRepository applicationUserGetterRepository,
-        IApplicationAdderRepository applicationUserAdderRepository,
+        IApplicationUserAdderRepository applicationUserUserAdderRepository,
         IPasswordCheckerServiceContract passwordCheckerService,
         IJWTTokenServiceContract jwtTokenService)
     {
         _applicationUserGetterRepository = applicationUserGetterRepository;
-        _applicationUserAdderRepository = applicationUserAdderRepository;
+        _applicationUserUserAdderRepository = applicationUserUserAdderRepository;
         _passwordCheckerService = passwordCheckerService;
         _jwtTokenService = jwtTokenService;
     }
@@ -54,16 +55,16 @@ public class AuthenticationService : IAuthenticationServiceContract
         // Stop login if no matching account exists.
         if (user is null)
         {
-            throw new Exception("Invalid email");
+            return null;
         }
 
         // Verify that the supplied password matches the stored hashed password.
-        var correctPassword = await _passwordCheckerService.CheckPassword(user, loginDTO.Password);
+        var result = await _passwordCheckerService.CheckPassword(user, loginDTO.Password);
 
         // Stop login if the password is incorrect.
-        if (correctPassword is false)
+        if (result == PasswordVerificationResult.Failed)
         {
-            throw new Exception("Invalid password");
+            return null;
         }
 
         // Create a JWT token for the authenticated user.
@@ -92,7 +93,7 @@ public class AuthenticationService : IAuthenticationServiceContract
         // Prevent duplicate email registrations.
         if (foundUser is not null)
         {
-            throw new Exception("Email already registered");
+            return null;
         }
 
         // Create the user entity from registration details.
@@ -111,7 +112,7 @@ public class AuthenticationService : IAuthenticationServiceContract
         createdUser.Password = hashedPassword;
 
         // Save the user and retrieve the inserted record.
-        var insertedUser = await _applicationUserAdderRepository.AddUserAsync(createdUser);
+        var insertedUser = await _applicationUserUserAdderRepository.AddUserAsync(createdUser);
 
         // Generate a JWT token so the new user can immediately authenticate.
         var token = await _jwtTokenService.GenerateJWTToken(insertedUser);

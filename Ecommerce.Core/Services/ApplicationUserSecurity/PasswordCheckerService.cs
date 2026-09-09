@@ -6,9 +6,9 @@ namespace Ecommerce.Core.Services.ApplicationUserSecurity;
 
 public class PasswordCheckerService : IPasswordCheckerServiceContract
 {
-    public Task<bool> CheckPassword(ApplicationUser user, string password)
+    public Task<PasswordVerificationResult> CheckPassword(ApplicationUser user, string password)
     {
-        var hashedPassword = new PasswordHasher<ApplicationUser>().HashPassword(user , password);
-        return Task.FromResult(hashedPassword == password);
+        var result = new PasswordHasher<ApplicationUser>().VerifyHashedPassword(user,user.Password , password);
+        return Task.FromResult(result);
     }
 }
