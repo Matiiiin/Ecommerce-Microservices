@@ -1,4 +1,6 @@
-﻿using Ecommerce.Infrastructure.Database;
+﻿using Ecommerce.Core.RepositoryContracts.ApplicationUserRepositoryContracts;
+using Ecommerce.Infrastructure.Database;
+using Ecommerce.Infrastructure.Repositories.ApplicationUserRepositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +11,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services , IConfiguration configuration)
     {
+        services.AddScoped<IApplicationAdderRepository , ApplicationUserAdderRepository>();
+        services.AddScoped<IApplicationUserGetterRepository , ApplicationUserGetterRepository>();
+        
         services.AddDbContext<ApplicationDbContext>(o =>
         {
             o.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
