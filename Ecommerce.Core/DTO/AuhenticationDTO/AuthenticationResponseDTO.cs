@@ -6,7 +6,7 @@ public record AuthenticationResponseDTO(
     Guid UserId,
     string? Email,
     string? PersonName,
-    Gender Gender,
+    Gender Gender ,
     string? Token,
     bool Success
     );

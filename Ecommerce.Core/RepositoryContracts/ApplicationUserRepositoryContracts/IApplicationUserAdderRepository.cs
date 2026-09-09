@@ -2,7 +2,7 @@
 
 namespace Ecommerce.Core.RepositoryContracts.ApplicationUserRepositoryContracts;
 
-public interface IApplicationAdderRepository
+public interface IApplicationUserAdderRepository
 {
     public Task<ApplicationUser?> AddUserAsync(ApplicationUser user);
 }

@@ -11,7 +11,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services , IConfiguration configuration)
     {
-        services.AddScoped<IApplicationAdderRepository , ApplicationUserAdderRepository>();
+        services.AddScoped<IApplicationUserAdderRepository , ApplicationUserUserAdderRepository>();
         services.AddScoped<IApplicationUserGetterRepository , ApplicationUserGetterRepository>();
         
         services.AddDbContext<ApplicationDbContext>(o =>

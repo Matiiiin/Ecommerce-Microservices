@@ -4,11 +4,11 @@ using Ecommerce.Infrastructure.Database;
 
 namespace Ecommerce.Infrastructure.Repositories.ApplicationUserRepositories;
 
-public class ApplicationUserAdderRepository : IApplicationAdderRepository
+public class ApplicationUserUserAdderRepository : IApplicationUserAdderRepository
 {
     private readonly ApplicationDbContext _db;
 
-    public ApplicationUserAdderRepository(ApplicationDbContext db)
+    public ApplicationUserUserAdderRepository(ApplicationDbContext db)
     {
         _db = db;
     }

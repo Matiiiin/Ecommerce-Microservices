@@ -25,7 +25,7 @@ public Task<string> GenerateJWTToken(ApplicationUser user)
 
     // Fail early if required configuration or user data is missing.
     // A JWT must have a secret key, and the email is used as the user's identity claim.
-    var secretKey = jwtOptions?.SecretKey.ToString()
+    var secretKey = jwtOptions?.SecretKey
         ?? throw new InvalidOperationException("JWT secret key is not configured.");
 
     var email = user.Email
