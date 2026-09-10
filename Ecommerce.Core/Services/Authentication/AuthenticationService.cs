@@ -7,6 +7,7 @@ using Ecommerce.Core.ServiceContracts.JWTToken;
 using Ecommerce.Core.Services.JWTToken;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Npgsql;
 
 namespace ECommerce.Core.Services.Authentication;
 
@@ -114,6 +115,8 @@ public class AuthenticationService : IAuthenticationServiceContract
         // Save the user and retrieve the inserted record.
         var insertedUser = await _applicationUserUserAdderRepository.AddUserAsync(createdUser);
 
+        if (insertedUser is null) throw new NpgsqlException("error creating user");
+        
         // Generate a JWT token so the new user can immediately authenticate.
         var token = await _jwtTokenService.GenerateJWTToken(insertedUser);
 
