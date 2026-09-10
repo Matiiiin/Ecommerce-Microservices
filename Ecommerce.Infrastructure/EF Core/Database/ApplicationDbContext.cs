@@ -1,9 +1,8 @@
 ﻿using Ecommerce.Core.Entities.ApplicationUser;
 using Ecommerce.Core.Entities.Enum;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ecommerce.Infrastructure.Database;
+namespace Ecommerce.Infrastructure.EF_Core.Database;
 
 public class ApplicationDbContext : DbContext
 {

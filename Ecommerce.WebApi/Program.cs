@@ -88,7 +88,7 @@ builder.Services.AddAuthentication().AddJwtBearer(o=>{
     
 });
 builder.Services.AddAuthorization();
-
+builder.Services.AddHealthChecks();
 
 
 var app = builder.Build();
@@ -112,6 +112,6 @@ app.UseSwaggerUI(options =>
 
 
 app.MapControllers();
-
+app.UseHealthChecks("/health");
 
 app.Run();

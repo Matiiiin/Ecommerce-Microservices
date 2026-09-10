@@ -1,8 +1,8 @@
 ﻿using Ecommerce.Core.Entities.ApplicationUser;
 using Ecommerce.Core.RepositoryContracts.ApplicationUserRepositoryContracts;
-using Ecommerce.Infrastructure.Database;
+using Ecommerce.Infrastructure.EF_Core.Database;
 
-namespace Ecommerce.Infrastructure.Repositories.ApplicationUserRepositories;
+namespace Ecommerce.Infrastructure.EF_Core.Repositories.ApplicationUserRepositories;
 
 public class ApplicationUserUserAdderRepository : IApplicationUserAdderRepository
 {

@@ -1,6 +1,9 @@
 ﻿using Ecommerce.Core.RepositoryContracts.ApplicationUserRepositoryContracts;
-using Ecommerce.Infrastructure.Database;
-using Ecommerce.Infrastructure.Repositories.ApplicationUserRepositories;
+using Ecommerce.Core.ServiceContracts.Database;
+using Ecommerce.Infrastructure.Dapper;
+using Ecommerce.Infrastructure.Dapper.Database;
+using Ecommerce.Infrastructure.Dapper.Repositories.ApplicationUserRepositories;
+using Ecommerce.Infrastructure.EF_Core.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +16,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IApplicationUserAdderRepository , ApplicationUserUserAdderRepository>();
         services.AddScoped<IApplicationUserGetterRepository , ApplicationUserGetterRepository>();
+        services.AddScoped<IDapperDbContext , DapperDbContext>();
         
         services.AddDbContext<ApplicationDbContext>(o =>
         {
